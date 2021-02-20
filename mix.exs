@@ -54,7 +54,6 @@ defmodule SketchAscii.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
 
-
       # testing & dev environment
       {:credo, "~> 1.5.0-rc.2", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.14.0", only: :test}
