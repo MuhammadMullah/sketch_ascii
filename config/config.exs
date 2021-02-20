@@ -13,7 +13,7 @@ config :sketch_ascii,
 # Configures the endpoint
 config :sketch_ascii, SketchAsciiWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "lBbc3NXBBnQYl36JezDYpaW8UuJbRT7XpSkEG3M+cg4QgxmUx7OEIAxTjm59VS2P",
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
   render_errors: [view: SketchAsciiWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: SketchAscii.PubSub,
   live_view: [signing_salt: "NMjNtsEK"]
