@@ -1,0 +1,47 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/elixir:1.10.3
+        environment:
+          MIX_ENV: test
+
+      - image: circleci/postgres:10.1-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: sketch_ascii_test
+          POSTGRES_PASSWORD: postgres
+
+    working_directory: ~/app
+    steps:
+      - checkout
+      - run: mix local.hex --force
+      - run: mix local.rebar --force
+
+      - restore_cache:
+          keys:
+            - v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
+            - v1-mix-cache-{{ .Branch }}
+            - v1-mix-cache
+      - restore_cache:
+          keys:
+            - v1-build-cache-{{ .Branch }}
+            - v1-build-cache
+      - run: mix do deps.get, compile
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          name: Check for warnings
+          command: mix do compile --warnings-as-errors
+      - run:
+          name: Format Code
+          command: mix format
+      - run: mix test
+      - store_test_results:
+          path: _build/test/lib/sketch_ascii
+    test:
+    override:
+      - mix coveralls.circle
