@@ -24,6 +24,8 @@ defmodule SketchAscii.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import SketchAscii.DataCase
+
+      import SketchAscii.Factory
     end
   end
 

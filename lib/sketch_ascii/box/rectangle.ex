@@ -5,7 +5,7 @@ defmodule SketchAscii.Box.Rectangle do
   import Ecto.Changeset
 
   @primary_key {:uuid, Ecto.UUID, autogenerate: true}
-  @all_fields [:width, :height, :fill, :outline]
+  @all_fields [:width, :height, :fill, :outline, :coordinates]
   @required_fields [:width, :height]
 
   schema "rectangles" do

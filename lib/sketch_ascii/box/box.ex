@@ -11,6 +11,9 @@ defmodule SketchAscii.Box do
   @spec update_rectangle(Rectangle.t(), %{optional(atom) => binary}) ::
           {:error, Ecto.Changeset.t()} | {:ok, Rectangle.t()}
   @spec get_rectangle_by_uuid(binary) :: {:error, any} | {:ok, Rectangle.t()}
+  @spec list_rectangles() :: [Rectangle.t()]
+
+  # TODO: refactor
 
   @doc """
     Create a new rectangle
@@ -43,6 +46,16 @@ defmodule SketchAscii.Box do
   end
 
 
+
+  @doc """
+    Fetch a rectangle from the database by its uuid
+
+    ## Example
+      iex> get_rectangle_by_uuid("existing_uuid")
+      {:ok, %Rectangle{}}
+      iex> get_rectangle_by_uuid("non_existing_uuid")
+      {:error, "error"}
+  """
   def get_rectangle_by_uuid(uuid) when is_binary(uuid) do
     case Repo.get(Rectangle, uuid) do
       %Rectangle{} = rectangle ->
@@ -51,4 +64,6 @@ defmodule SketchAscii.Box do
         {:error, "No rectangle with id: #{uuid} exists"}
     end
   end
+
+  def list_rectangles, do: Rectangle |> Repo.all()
 end
