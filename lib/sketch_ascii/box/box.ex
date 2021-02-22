@@ -7,13 +7,6 @@ defmodule SketchAscii.Box do
   alias SketchAscii.Repo
   alias SketchAscii.Box.Rectangle
 
-  @spec create_rectangle(map) :: {:error, atom | Ecto.Changeset.t()} | {:ok, Rectangle.t()}
-  @spec update_rectangle(Rectangle.t(), %{optional(atom) => binary}) ::
-          {:error, Ecto.Changeset.t()} | {:ok, Rectangle.t()}
-  @spec get_rectangle_by_uuid(binary) :: {:error, any} | {:ok, Rectangle.t()}
-  @spec list_rectangles() :: [Rectangle.t()]
-  @spec draw(map) :: binary()
-
   @doc """
     Create a new rectangle
 
@@ -23,6 +16,7 @@ defmodule SketchAscii.Box do
         iex> create_rectangle(%{bad_field: value})
         {:error, %Ecto.Changeset{}}
   """
+  @spec create_rectangle(map) :: {:error, atom | Ecto.Changeset.t()} | {:ok, Rectangle.t()}
   def create_rectangle(attrs) do
     %Rectangle{}
     |> Rectangle.changeset(attrs)
@@ -38,6 +32,8 @@ defmodule SketchAscii.Box do
         iex> update_rectangle(rectangle, %{field: bad_value})
         {:error, %Ecto.Changeset{}}
   """
+  @spec update_rectangle(Rectangle.t(), %{optional(atom) => binary}) ::
+          {:error, Ecto.Changeset.t()} | {:ok, Rectangle.t()}
   def update_rectangle(rectangle, attrs) do
     rectangle
     |> Rectangle.changeset(attrs)
@@ -53,6 +49,7 @@ defmodule SketchAscii.Box do
       iex> get_rectangle_by_uuid("non_existing_uuid")
       {:error, "error"}
   """
+  @spec get_rectangle_by_uuid(binary) :: {:error, any} | {:ok, Rectangle.t()}
   def get_rectangle_by_uuid(uuid) when is_binary(uuid) do
     case Repo.get(Rectangle, uuid) do
       %Rectangle{} = rectangle ->
@@ -66,8 +63,10 @@ defmodule SketchAscii.Box do
   @doc """
     Fetches all rectangles in the database and returns a list of rectangle structs
   """
+  @spec list_rectangles() :: [Rectangle.t()]
   def list_rectangles, do: Rectangle |> Repo.all()
 
+  @spec draw(map) :: binary()
   def draw(%Rectangle{} = rect) do
     # Get the vertical start coordinate
     [_, y] = rect.coordinates
