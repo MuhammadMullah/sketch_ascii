@@ -1,11 +1,10 @@
-defmodule SketchAscii.Factory  do
+defmodule SketchAscii.Factory do
   @moduledoc """
     Our factory definitions
   """
 
   alias SketchAscii.Repo
   alias SketchAscii.Box.Rectangle
-
 
   def build(:rectangle) do
     %Rectangle{

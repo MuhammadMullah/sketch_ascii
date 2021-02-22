@@ -45,8 +45,6 @@ defmodule SketchAscii.Box do
     |> Repo.update()
   end
 
-
-
   @doc """
     Fetch a rectangle from the database by its uuid
 
@@ -60,10 +58,55 @@ defmodule SketchAscii.Box do
     case Repo.get(Rectangle, uuid) do
       %Rectangle{} = rectangle ->
         {:ok, rectangle}
+
       _ ->
         {:error, "No rectangle with id: #{uuid} exists"}
     end
   end
 
+  @doc """
+    Fetches all rectangles in the database and returns a list of rectangle structs
+  """
   def list_rectangles, do: Rectangle |> Repo.all()
+
+  def draw(%Rectangle{} = rect) do
+    # Get the vertical start coordinate
+    [x, _] = rect.coordinates
+
+    for _ <- 1..x, do: new_line()
+
+    # Loop for each row (x-axis)
+    for row <- 1..rect.height do
+      # Calc the horizontal (x-axis) start coordinate
+      calc_x_start_point(rect)
+      # Loop for each column (y-axis)
+      1..rect.width
+      |> Enum.reduce("", fn column, acc ->
+        acc <> get_char(rect, row, column)
+      end)
+      |> print()
+
+      # Begin a new row
+      new_line()
+    end
+  end
+
+  defp calc_x_start_point(%Rectangle{coordinates: [_, y]}) do
+    for _ <- 1..y, do: print()
+  end
+
+  defp new_line, do: IO.write("\n")
+
+  defp print(text \\ " "), do: IO.write(text)
+
+  defp get_char(%Rectangle{outline: outline, fill: fill}, _row, _column)
+       when is_nil(outline) or outline == "",
+       do: fill
+
+  defp get_char(%Rectangle{outline: outline, fill: fill} = rect, row, column) do
+    edge? = row == 1 or row == rect.height or column == 1 or column == rect.width
+    if edge?, do: outline, else: fill
+  end
+
+  defp get_char(%Rectangle{fill: fill}, _row, _column), do: fill
 end
