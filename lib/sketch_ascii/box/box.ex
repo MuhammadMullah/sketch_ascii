@@ -12,8 +12,7 @@ defmodule SketchAscii.Box do
           {:error, Ecto.Changeset.t()} | {:ok, Rectangle.t()}
   @spec get_rectangle_by_uuid(binary) :: {:error, any} | {:ok, Rectangle.t()}
   @spec list_rectangles() :: [Rectangle.t()]
-
-  # TODO: refactor
+  @spec draw(map) :: binary()
 
   @doc """
     Create a new rectangle
@@ -71,33 +70,28 @@ defmodule SketchAscii.Box do
 
   def draw(%Rectangle{} = rect) do
     # Get the vertical start coordinate
-    [x, _] = rect.coordinates
+    [_, y] = rect.coordinates
 
-    for _ <- 1..x, do: new_line()
+    y_cord = duplicate("\n", y)
 
     # Loop for each row (x-axis)
-    for row <- 1..rect.height do
+    1..rect.height
+    |> Enum.reduce(y_cord, fn row, acc_row ->
       # Calc the horizontal (x-axis) start coordinate
-      calc_x_start_point(rect)
+      current_x_cord = calc_x_start_point(rect)
       # Loop for each column (y-axis)
-      1..rect.width
-      |> Enum.reduce("", fn column, acc ->
-        acc <> get_char(rect, row, column)
-      end)
-      |> print()
+      current_row =
+        1..rect.width
+        |> Enum.reduce(current_x_cord, fn column, acc_col ->
+          acc_col <> get_char(rect, row, column)
+        end)
 
-      # Begin a new row
-      new_line()
-    end
+      # save current row
+      acc_row <> current_row <> "\n"
+    end)
   end
 
-  defp calc_x_start_point(%Rectangle{coordinates: [_, y]}) do
-    for _ <- 1..y, do: print()
-  end
-
-  defp new_line, do: IO.write("\n")
-
-  defp print(text \\ " "), do: IO.write(text)
+  defp calc_x_start_point(%Rectangle{coordinates: [x, _]}), do: duplicate(" ", x)
 
   defp get_char(%Rectangle{outline: outline, fill: fill}, _row, _column)
        when is_nil(outline) or outline == "",
@@ -105,8 +99,11 @@ defmodule SketchAscii.Box do
 
   defp get_char(%Rectangle{outline: outline, fill: fill} = rect, row, column) do
     edge? = row == 1 or row == rect.height or column == 1 or column == rect.width
+
     if edge?, do: outline, else: fill
   end
 
-  defp get_char(%Rectangle{fill: fill}, _row, _column), do: fill
+  defp duplicate(char, times) do
+    Enum.reduce(1..times, "", fn _, acc -> acc <> char end)
+  end
 end

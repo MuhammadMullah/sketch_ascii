@@ -33,4 +33,49 @@ defmodule SketchAscii.Box.BoxTest do
       assert is_binary(rectangle.uuid)
     end
   end
+
+  describe "drawing a rectangle" do
+    test "draw/1 with an outline character" do
+      attrs = [
+        width: 10,
+        height: 5,
+        outline: "$",
+        fill: "0",
+        coordinates: [5, 3]
+      ]
+
+      rectangle = insert!(:rectangle, attrs)
+
+      assert Box.draw(rectangle) == """
+
+
+
+                  $$$$$$$$$$
+                  $00000000$
+                  $00000000$
+                  $00000000$
+                  $$$$$$$$$$
+             """
+    end
+
+    test "draw/1 without an outline character" do
+      attrs = [
+        width: 10,
+        height: 3,
+        outline: "",
+        fill: "0",
+        coordinates: [5, 2]
+      ]
+
+      rectangle = insert!(:rectangle, attrs)
+
+      assert Box.draw(rectangle) == """
+
+
+                  0000000000
+                  0000000000
+                  0000000000
+             """
+    end
+  end
 end
