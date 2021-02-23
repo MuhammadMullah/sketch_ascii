@@ -3,10 +3,10 @@ defmodule SketchAsciiWeb.Router do
 
   pipeline :browser do
     plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    # plug :fetch_session
+    # plug :fetch_flash
+    # plug :protect_from_forgery
+    # plug :put_secure_browser_headers
   end
 
   pipeline :api do
@@ -17,6 +17,7 @@ defmodule SketchAsciiWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    post "/rectangles", RectangleController, :create
   end
 
   # Other scopes may use custom stacks.
