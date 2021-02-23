@@ -5,6 +5,7 @@ defmodule SketchAsciiWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
+    plug :put_root_layout, {SketchAsciiWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -18,6 +19,7 @@ defmodule SketchAsciiWeb.Router do
 
     get "/", PageController, :index
     live "/testing", TestingLive
+    live "/rectangles", AsciiLive.Index, :index
   end
 
   # Other scopes may use custom stacks.
