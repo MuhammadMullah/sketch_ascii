@@ -7,12 +7,4 @@ defmodule SketchAsciiWeb.AsciiLive.Index do
     rectangles = Box.list_rectangles()
     {:ok, assign(socket, :rectangles, rectangles)}
   end
-
-  def render(assigns) do
-    ~L"""
-      <p>Hey</p>
-    """
-  end
-
-
 end

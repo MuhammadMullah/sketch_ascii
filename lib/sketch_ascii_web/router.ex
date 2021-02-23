@@ -18,7 +18,6 @@ defmodule SketchAsciiWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    live "/testing", TestingLive
     live "/rectangles", AsciiLive.Index, :index
   end
 
