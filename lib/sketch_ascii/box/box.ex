@@ -66,6 +66,11 @@ defmodule SketchAscii.Box do
   @spec list_rectangles() :: [Rectangle.t()]
   def list_rectangles, do: Rectangle |> Repo.all()
 
+
+
+  @doc """
+    Returns a drawing canvas for a rectangle
+  """
   @spec draw(Rectangle.t()) :: binary()
   def draw(%Rectangle{} = rect) do
     # Get the vertical start coordinate
