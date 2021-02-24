@@ -1,6 +1,6 @@
 defmodule SketchAscii.Box do
   @moduledoc """
-    Rectangle Contexts
+    Box Contexts. Holds the business logic of working with the rectangle schema and function to draw a canvas
   """
   import Ecto.Query, warn: false
 
@@ -65,8 +65,6 @@ defmodule SketchAscii.Box do
   """
   @spec list_rectangles() :: [Rectangle.t()]
   def list_rectangles, do: Rectangle |> Repo.all()
-
-
 
   @doc """
     Returns a drawing canvas for a rectangle

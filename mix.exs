@@ -18,6 +18,14 @@ defmodule SketchAscii.MixProject do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test
+      ],
+      name: "SketchAscii",
+      source_url: "https://github.com/MuhammadMullah/sketch_ascii",
+      homepage_url: "https://github.com/MuhammadMullah/sketch_ascii",
+      docs: [
+        # The main page in the docs
+        main: "SketchAscii",
+        extras: ["README.md"]
       ]
     ]
   end
@@ -57,7 +65,10 @@ defmodule SketchAscii.MixProject do
 
       # testing & dev environment
       {:credo, "~> 1.5.0-rc.2", only: [:dev, :test], runtime: false},
-      {:excoveralls, "~> 0.14.0", only: :test}
+      {:excoveralls, "~> 0.14.0", only: :test},
+
+      # documentation
+      {:ex_doc, "~> 0.23.0", only: :dev, runtime: false}
     ]
   end
 
